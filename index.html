@@ -1,0 +1,66 @@
+<base href="https://docs.lume.io/" />
+<script src="./importmap.js"></script>
+
+<style>
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: #eee;
+	touch-action: none;
+  text-alignment: center;
+}
+h1 {
+  width: 100%;
+  height:50px;
+  font-size:12em;
+  display: block;
+}
+h1 span {
+  font-size:0.2em;
+}
+lume-mixed-plane {
+  text-align:center;
+  width: 100%;
+}
+header {
+  align:
+</style>
+<lume-scene id="scene" perspective="50" webgl enable-css mount-point="0.5 0.5 0.5">
+	<lume-line id="line" has="line-geometry line-material" color="deeppink" points=""></lume-line>
+	<lume-mixed-plane size="1000 200">
+    <h1>ndvsbl<span>.uk</span></h1>
+    <h2>arts / media / XR</h2>
+	</lume-mixed-plane>
+</lume-scene>
+
+<script type="module">
+import 'lume'
+
+// FIXME We currently need to skip a turn or else setting the points below
+// will be overwritten by the empty points attribute.
+await new Promise(r => setTimeout(r))
+
+// Generate points for a spiral-shaped line.
+const points = []
+let angle = 0
+let distance = 0
+let z = 0
+for (const _ of Array(300).map((_, i) => i)) {
+	const x = distance * Math.cos(angle)
+	const y = distance * Math.sin(angle)
+	points.push(x, y, 400 * Math.sin(z))
+
+	angle += Math.PI / 16
+	distance += 10
+	z += Math.PI / 5
+}
+
+line.points = points
+
+// Give the spiral some rotation around Z.
+line.rotation = (x, y, z) => [x, y, z - 1]
+</script>
+
